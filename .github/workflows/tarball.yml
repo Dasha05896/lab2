@@ -1,0 +1,19 @@
+name: Create Tarball
+
+on:
+  push:
+    branches:
+      - branchAutomake
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Build tarball
+        run: |
+          autoreconf --install
+          ./configure
+          make dist
+
