@@ -1,0 +1,18 @@
+name: Build and Compile
+on:
+  push:
+    branches:
+      - branchMake
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y g++
+
+      - name: Build project
+        run: make
