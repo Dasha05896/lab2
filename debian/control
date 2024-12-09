@@ -1,0 +1,14 @@
+Source: mypackage
+Section: utils
+Priority: optional
+Maintainer: Dasha05896 <youremail@example.com>
+Build-Depends: debhelper (>= 12), gcc
+Standards-Version: 4.5.0
+Homepage: https://example.com
+
+Package: mypackage
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: My package does something useful
+
+

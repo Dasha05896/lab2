@@ -1,0 +1,10 @@
+Package: mypackage
+Version: 1.0-1
+Architecture: amd64
+Maintainer: Dasha05896 <youremail@example.com>
+Installed-Size: 23
+Depends: libc6 (>= 2.34), libstdc++6 (>= 4.4)
+Section: utils
+Priority: optional
+Homepage: https://example.com
+Description: My package does something useful

@@ -22,4 +22,7 @@ jobs:
           make dist
           ls -l *.tar.gz
 
-
+      - name: Build Debian Package
+        run: |
+          dpkg-buildpackage -us -uc
+          ls -l ../*.deb
