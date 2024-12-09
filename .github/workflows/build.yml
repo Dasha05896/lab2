@@ -26,3 +26,6 @@ jobs:
         run: |
           dpkg-buildpackage -us -uc
           ls -l ../*.deb
+
+      - name: Run Tests
+        run: make check

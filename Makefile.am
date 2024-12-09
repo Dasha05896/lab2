@@ -1,2 +1,3 @@
-bin_PROGRAMS = myprogram
-myprogram_SOURCES = main.cpp
+TESTS = test
+check_PROGRAMS = test
+test_SOURCES = test.cpp
