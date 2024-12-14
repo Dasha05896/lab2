@@ -1,23 +1,36 @@
 # Перший етап: збірка програми
-FROM golang:1.20 AS builder
+FROM golang:1.21 AS builder
 
-# Робоча директорія для збірки
+# Робоча директорія для коду
 WORKDIR /app
 
-# Завантаження файлів із публічного GitHub репозиторію
-RUN git clone https://github.com/Dasha05896/lab2.git .
+# Копіюємо файли go.mod і go.sum для завантаження залежностей
+COPY go.mod go.sum ./
+RUN go mod download
 
-# Збірка виконуваного файлу
-RUN go build -o server .
+# Копіюємо весь вихідний код програми
+COPY . .
 
-# Другий етап: створення фінального образу на основі Alpine
-FROM alpine:latest
+# Будуємо виконуваний файл без використання C-бібліотек
+RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o server .
 
-# Копіюємо виконуваний файл з першого етапу
+# Другий етап: створення фінального образу на основі Debian
+FROM debian:bullseye-slim
+
+# Встановлюємо тільки базові залежності
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Копіюємо скомпільований файл із попереднього етапу
 COPY --from=builder /app/server /server
 
-# Відкриваємо порт для HTTP-сервера
+# Встановлюємо права доступу для виконання
+RUN chmod +x /server
+
+# Відкриваємо порт для роботи сервера
 EXPOSE 8080
 
-# Запуск сервера
+# Команда для запуску програми
 CMD ["/server"]
+
