@@ -1,15 +1,23 @@
-# Вибір базового образу
-FROM python:3.9-slim
+# Перший етап: збірка програми
+FROM golang:1.20 AS builder
 
-# Встановлення залежностей
-RUN pip install flask
-
-# Копіюємо ваш код у контейнер
-COPY . /app
+# Робоча директорія для збірки
 WORKDIR /app
 
-# Відкриваємо порт
-EXPOSE 5000
+# Завантаження файлів із публічного GitHub репозиторію
+RUN git clone https://github.com/Dasha05896/lab2.git .
 
-# Команда для запуску сервера
-CMD ["python", "http_server.py"]
+# Збірка виконуваного файлу
+RUN go build -o server .
+
+# Другий етап: створення фінального образу на основі Alpine
+FROM alpine:latest
+
+# Копіюємо виконуваний файл з першого етапу
+COPY --from=builder /app/server /server
+
+# Відкриваємо порт для HTTP-сервера
+EXPOSE 8080
+
+# Запуск сервера
+CMD ["/server"]
